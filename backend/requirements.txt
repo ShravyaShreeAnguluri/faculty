@@ -1,0 +1,16 @@
+fastapi
+uvicorn
+numpy
+opencv-python-headless
+insightface
+onnxruntime
+python-multipart
+sqlalchemy
+psycopg2-binary
+python-dotenv
+pdfplumber
+apscheduler
+bcrypt
+python-jose[cryptography]
+alembic
+email-validator
