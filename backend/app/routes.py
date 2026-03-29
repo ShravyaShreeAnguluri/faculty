@@ -745,34 +745,37 @@ def get_attendance_report_summary(
         **summary
     }
 
-# ---------- FORGET-PASSWORD ----------
+# =====================================================
+# FORGOT PASSWORD - SEND RESET LINK
+# =====================================================
 
 @router.post("/forgot-password-link")
 def forgot_password_link(
     data: schemas.ForgotPasswordRequest,
     db: Session = Depends(get_db)
 ):
-    print("FORGOT PASSWORD API HIT")
+    email = data.email.strip().lower()
 
-    user = db.query(Faculty).filter(Faculty.email == data.email).first()
+    user = db.query(Faculty).filter(Faculty.email == email).first()
+
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
 
+    # 🔑 Generate reset token
     token = generate_reset_token()
+
     user.reset_token = token
     user.reset_token_expiry = reset_token_expiry()
 
     db.commit()
 
-    reset_link = f"https://nongrievously-unpickable-araceli.ngrok-free.dev/reset-password-redirect?token={token}"
+    # ✅ IMPORTANT: Use Render URL (NOT ngrok)
+    reset_link = f"https://aec-app-da19.onrender.com/reset-password-redirect?token={token}"
 
-    try:
-        send_reset_email(user.email, reset_link)
-    except Exception as e:
-        print("EMAIL ERROR:", e)
-        raise HTTPException(status_code=500, detail="Email failed to send")
+    # 📧 Send email
+    send_reset_email(user.email, reset_link)
 
-    return {"message": "Password reset link sent"}
+    return {"message": "Password reset link sent successfully"}
 
 
 @router.post("/reset-password-link")
