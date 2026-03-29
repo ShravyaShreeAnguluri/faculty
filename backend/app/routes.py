@@ -771,7 +771,7 @@ def forgot_password_link(
 
     # ✅ IMPORTANT: Use Render URL (NOT ngrok)
     reset_link = f"https://aec-app-da19.onrender.com/reset-password-redirect?token={token}"
-
+    print("RESET LINK SENT:", reset_link)
     # 📧 Send email
     send_reset_email(user.email, reset_link)
 
