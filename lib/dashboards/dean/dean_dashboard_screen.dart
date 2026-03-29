@@ -9,7 +9,7 @@ import '../../screens/schedule/schedule_screen.dart';
 import '../../services/api_service.dart';
 import '../../services/token_service.dart';
 import 'dean_leave_screen.dart';
-
+import 'package:flutter/services.dart';
 // ── Color Palette ─────────────────────────────────────────────────────────────
 class _C {
   static const navy        = Color(0xFF0A2342);
@@ -303,17 +303,30 @@ class _DeanDashboardScreenState extends State<DeanDashboardScreen>
       _profileTab(),
     ];
 
-    return Scaffold(
-      backgroundColor: _C.bg,
-      body: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 350),
-        transitionBuilder: (child, anim) =>
-            FadeTransition(opacity: anim, child: child),
-        child: KeyedSubtree(
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) async {
+        if (didPop) return;
+
+        if (_currentIndex != 0) {
+          setState(() => _currentIndex = 0);
+        } else {
+          await SystemNavigator.pop();
+        }
+      },
+      child: Scaffold(
+        backgroundColor: _C.bg,
+        body: AnimatedSwitcher(
+          duration: const Duration(milliseconds: 280),
+          transitionBuilder: (child, anim) =>
+              FadeTransition(opacity: anim, child: child),
+          child: KeyedSubtree(
             key: ValueKey(_currentIndex),
-            child: pages[_currentIndex]),
+            child: pages[_currentIndex],
+          ),
+        ),
+        bottomNavigationBar: _buildBottomNav(),
       ),
-      bottomNavigationBar: _buildBottomNav(),
     );
   }
 

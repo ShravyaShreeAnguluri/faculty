@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
-
+import 'package:flutter/services.dart';
 import '../../faculty_docs_screens/certificates_screen.dart';
 import '../../faculty_docs_screens/home_screen.dart';
 import '../../providers/certificate_provider.dart';
@@ -340,26 +340,40 @@ class _FacultyDashboardScreenState extends State<FacultyDashboardScreen>
       ProfileScreen(
         name: widget.name,
         email: widget.email,
-        facultyId: widget.facultyId,
         department: widget.department,
+        facultyId: widget.facultyId,
         designation: widget.designation,
         qualification: widget.qualification,
         profileImage: widget.profileImage,
+        role: widget.role,
+        onBackToHome: () => setState(() => _currentIndex = 0),
       ),
     ];
 
-    return Scaffold(
-      backgroundColor: _C.bg,
-      body: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 280),
-        transitionBuilder: (child, anim) =>
-            FadeTransition(opacity: anim, child: child),
-        child: KeyedSubtree(
-          key: ValueKey(_currentIndex),
-          child: pages[_currentIndex],
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) async {
+        if (didPop) return;
+
+        if (_currentIndex != 0) {
+          setState(() => _currentIndex = 0);
+        } else {
+          await SystemNavigator.pop();
+        }
+      },
+      child: Scaffold(
+        backgroundColor: _C.bg,
+        body: AnimatedSwitcher(
+          duration: const Duration(milliseconds: 280),
+          transitionBuilder: (child, anim) =>
+              FadeTransition(opacity: anim, child: child),
+          child: KeyedSubtree(
+            key: ValueKey(_currentIndex),
+            child: pages[_currentIndex],
+          ),
         ),
+        bottomNavigationBar: _buildBottomNav(),
       ),
-      bottomNavigationBar: _buildBottomNav(),
     );
   }
 

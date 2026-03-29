@@ -164,6 +164,7 @@ class _AttendanceMenuScreenState extends State<AttendanceMenuScreen> {
     return Scaffold(
       backgroundColor: _bgLight,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const Text(
           "Attendance",
           style: TextStyle(

@@ -44,7 +44,7 @@ class _LoginScreenState extends State<LoginScreen> {
         const SnackBar(content: Text("OTP sent to your email")),
       );
 
-      Navigator.push(
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(
           builder: (context) =>

@@ -15,6 +15,7 @@ class ProfileScreen extends StatefulWidget {
   final String? qualification;
   final String? profileImage;
   final String  role; // 'faculty' | 'operator' | etc.
+  final VoidCallback? onBackToHome;
 
   const ProfileScreen({
     super.key,
@@ -26,6 +27,7 @@ class ProfileScreen extends StatefulWidget {
     this.qualification,
     this.profileImage,
     this.role = 'faculty',
+    this.onBackToHome,
   });
 
   @override
@@ -226,7 +228,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                   children: [
                                     _glassButton(
                                       icon: Icons.arrow_back_ios_new_rounded,
-                                      onTap: () => Navigator.pop(context),
+                                      onTap: widget.onBackToHome ?? () => Navigator.pop(context),
                                     ),
                                     const Spacer(),
                                     _glassButton(

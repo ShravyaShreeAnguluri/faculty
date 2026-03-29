@@ -15,7 +15,7 @@
 
 class AppConfig {
   // 👇 PASTE YOUR CURRENT NGROK DOMAIN HERE (no https://, no trailing slash)
-  static const String ngrokDomain = 'aec-app-da19.onrender.com';
+  static const String ngrokDomain = 'https://aec-app-da19.onrender.com';
 
   // Derived URLs — do not edit
   static const String baseUrl = 'https://aec-app-da19.onrender.com';
